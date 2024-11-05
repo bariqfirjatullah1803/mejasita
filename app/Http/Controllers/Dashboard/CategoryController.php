@@ -18,8 +18,9 @@ class CategoryController extends Controller
      */
     public function index(): Response
     {
+        $categories = Category::query()->paginate(10);
         return Inertia::render("Dashboard/Category/Index", [
-            "categories" => Category::all()
+            "categories" => $categories,
         ]);
     }
 
