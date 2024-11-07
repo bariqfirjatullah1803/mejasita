@@ -17,8 +17,8 @@ class Chapter extends Model
     {
         parent::boot();
 
-        static::creating(function ($item) {
-            $slug = Str::slug($item->title);
+        static::creating(function ($chapter) {
+            $slug = Str::slug($chapter->title);
 
             $originalSlug = $slug;
             $count = 1;
@@ -27,21 +27,43 @@ class Chapter extends Model
                 $count++;
             }
 
-            $item->slug = $slug;
+            $chapter->slug = $slug;
+            $chapter->chapter_order = self::query()->where('classroom_id', $chapter->classroom_id)->max('chapter_order') + 1;
+
         });
 
-        static::updating(function ($item) {
-            if ($item->isDirty('title')) {
-                $slug = Str::slug($item->title);
+        static::deleting(function ($chapter) {
+            self::query()->where('classroom_id', $chapter->classroom_id)
+                ->where('chapter_order', '>', $chapter->chapter_order)
+                ->decrement('chapter_order');
+        });
+        static::updating(function ($chapter) {
+            if ($chapter->isDirty('title')) {
+                $slug = Str::slug($chapter->title);
 
                 $originalSlug = $slug;
                 $count = 1;
-                while (self::query()->withTrashed()->where('slug', $slug)->where('id', '!=', $item->id)->exists()) {
+                while (self::query()->withTrashed()->where('slug', $slug)->where('id', '!=', $chapter->id)->exists()) {
                     $slug = $originalSlug . '-' . $count;
                     $count++;
                 }
 
-                $item->slug = $slug;
+                $chapter->slug = $slug;
+            }
+
+            if ($chapter->isDirty('chapter_order')) {
+                $oldOrder = $chapter->getOriginal('chapter_order');
+                $newOrder = $chapter->chapter_order;
+
+                if ($oldOrder > $newOrder) {
+                    self::query()->where('classroom_id', $chapter->classroom_id)
+                        ->whereBetween('chapter_order', [$newOrder, $oldOrder - 1])
+                        ->increment('chapter_order');
+                } else {
+                    self::query()->where('classroom_id', $chapter->classroom_id)
+                        ->whereBetween('chapter_order', [$oldOrder + 1, $newOrder])
+                        ->decrement('chapter_order');
+                }
             }
         });
     }

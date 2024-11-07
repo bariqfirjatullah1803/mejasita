@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Button, Input } from '@headlessui/react';
 import { Link, router } from '@inertiajs/react';
 
-export default function Index({ classroom,chapters }) {
+export default function Index({ classroom, chapters }) {
     const handleDelete = (id, e) => {
         e.preventDefault();
         const isConfirmed = window.confirm(
@@ -11,7 +11,12 @@ export default function Index({ classroom,chapters }) {
         );
 
         if (isConfirmed) {
-            router.delete(route('dashboard.chapter.destroy', { chapter:id, classroom: classroom.id}));
+            router.delete(
+                route('dashboard.chapter.destroy', {
+                    chapter: id,
+                    classroom: classroom.id,
+                }),
+            );
         }
     };
     return (
@@ -20,8 +25,15 @@ export default function Index({ classroom,chapters }) {
                 <div className={'mt-10 rounded-lg bg-white p-4 text-start'}>
                     <div className={'mb-3 flex flex-col gap-y-3'}>
                         <div className={'flex justify-between'}>
-                        <Link href={route('dashboard.classroom.index')} className={'text-lg font-bold text-primary'}>{classroom.name}</Link>
-                        <h2 className={'text-lg font-bold'}>List Chapters</h2>
+                            <Link
+                                href={route('dashboard.classroom.index')}
+                                className={'text-lg font-bold text-primary'}
+                            >
+                                {classroom.name}
+                            </Link>
+                            <h2 className={'text-lg font-bold'}>
+                                List Chapters
+                            </h2>
                         </div>
                         <hr />
                     </div>
@@ -32,25 +44,39 @@ export default function Index({ classroom,chapters }) {
                     >
                         <form
                             className={
-                                'flex flex-col items-start gap-x-3 lg:flex-row lg:items-center w-full lg:w-auto '
+                                'flex w-full flex-col items-start gap-x-3 lg:w-auto lg:flex-row lg:items-center'
                             }
                         >
                             <InputLabel>Cari</InputLabel>
                             <Input
                                 type={'text'}
-                                className={
-                                    'h-8 w-full rounded-lg text-xs'
-                                }
+                                className={'h-8 w-full rounded-lg text-xs'}
                             ></Input>
                         </form>
-                        <Link
-                            href={route('dashboard.chapter.create', classroom.id)}
-                            className={
-                                'w-full rounded-lg bg-primary px-3 py-1 text-white lg:w-auto'
-                            }
-                        >
-                            Tambah Baru
-                        </Link>
+                        <div className={'flex gap-x-3'}>
+                            <Link
+                                href={route(
+                                    'dashboard.chapter.create',
+                                    classroom.id,
+                                )}
+                                className={
+                                    'w-full rounded-lg bg-primary px-3 py-1 text-white lg:w-auto'
+                                }
+                            >
+                                Change Order
+                            </Link>
+                            <Link
+                                href={route(
+                                    'dashboard.chapter.create',
+                                    classroom.id,
+                                )}
+                                className={
+                                    'w-full rounded-lg bg-primary px-3 py-1 text-white lg:w-auto'
+                                }
+                            >
+                                Create New
+                            </Link>
+                        </div>
                     </div>
                     <div className="relative flex h-full w-full flex-col overflow-auto rounded-lg bg-white bg-clip-border text-gray-700">
                         <table className="w-full min-w-max table-auto text-left">
@@ -75,15 +101,24 @@ export default function Index({ classroom,chapters }) {
                                         className="hover:bg-slate-50"
                                     >
                                         <td className="border-b border-slate-200 p-4">
-                                            <p className="block text-sm text-slate-800">
+                                            <Link
+                                                href={route(
+                                                    'dashboard.material.index',
+                                                    item.id,
+                                                )}
+                                                className="block text-sm text-primary"
+                                            >
                                                 {item.title}
-                                            </p>
+                                            </Link>
                                         </td>
                                         <td className="flex flex-row items-center gap-x-3 border-b border-slate-200 p-4">
                                             <a
                                                 href={route(
                                                     'dashboard.chapter.edit',
-                                                    { chapter:item.id,classroom:classroom.id }
+                                                    {
+                                                        chapter: item.id,
+                                                        classroom: classroom.id,
+                                                    },
                                                 )}
                                                 className="block text-sm font-semibold text-slate-800"
                                             >

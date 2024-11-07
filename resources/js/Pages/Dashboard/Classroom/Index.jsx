@@ -62,7 +62,7 @@ export default function Index({ classrooms }) {
                                     'w-full rounded-lg bg-primary px-3 py-1 text-white lg:w-auto'
                                 }
                             >
-                                Tambah Baru
+                                Create New
                             </Link>
                         </div>
                     </div>

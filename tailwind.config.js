@@ -2,6 +2,8 @@ import forms from '@tailwindcss/forms';
 import defaultTheme, {
     colors as defaultColors,
 } from 'tailwindcss/defaultTheme';
+import path from "path";
+
 
 /** @type {import('tailwindcss').Config} */
 
@@ -11,6 +13,10 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.jsx',
+        path.join(
+            require.resolve("@thaddeusjiang/react-sortable-list"),
+            "../**/*.{js,ts,jsx,tsx}"
+        )
     ],
 
     theme: {
