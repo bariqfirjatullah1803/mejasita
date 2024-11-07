@@ -6,6 +6,17 @@ import { useState } from 'react';
 export default function AuthenticatedLayout({ children }) {
     const user = usePage().props.auth.user;
 
+    const menu = [
+        {
+            name: 'Category',
+            link: '',
+        },
+        {
+            name: 'Classroom',
+            link: '',
+        },
+    ];
+
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -175,6 +186,30 @@ export default function AuthenticatedLayout({ children }) {
             {/*        </div>*/}
             {/*    </header>*/}
             {/*)}*/}
+
+            <div className={'container mx-auto mt-10'}>
+                <div
+                    className={
+                        'flex flex-col gap-y-3 rounded-lg bg-white p-4 text-accent'
+                    }
+                >
+                    <h1 className={'text-lg font-normal'}>Management</h1>
+                    <hr />
+                    <div className={'flex flex-row flex-wrap gap-x-3'}>
+                        {menu.map((item, index) => (
+                            <Link
+                                key={index}
+                                href={'#'}
+                                className={
+                                    'w-fit rounded-lg border border-accent bg-white px-3 py-1'
+                                }
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </div>
 
             <main>{children}</main>
         </div>

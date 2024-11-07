@@ -1,14 +1,27 @@
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import { Input, Select } from '@headlessui/react';
-import { Link } from '@inertiajs/react';
-import { route } from 'ziggy-js';
+import { Button, Input, Select } from '@headlessui/react';
+import { Link, router } from '@inertiajs/react';
 
 export default function Index({ categories }) {
+    const handleDelete = (id, e) => {
+        e.preventDefault();
+        const isConfirmed = window.confirm(
+            'Are you sure you want to delete this item?',
+        );
+
+        if (isConfirmed) {
+            router.delete(route('dashboard.category.destroy', id));
+        }
+    };
     return (
         <AuthenticatedLayout>
             <div className={'container mx-auto text-accent'}>
                 <div className={'mt-10 rounded-lg bg-white p-4 text-start'}>
+                    <div className={'mb-3 flex flex-col gap-y-3'}>
+                        <h1 className={'text-lg font-bold'}>List Category</h1>
+                        <hr />
+                    </div>
                     <div
                         className={
                             'mb-3 flex flex-col items-center justify-between gap-x-3 gap-y-3 lg:flex-row'
@@ -44,7 +57,7 @@ export default function Index({ categories }) {
                                 <option>100</option>
                             </Select>
                             <Link
-                                href={route('dashboard.category.index')}
+                                href={route('dashboard.category.create')}
                                 className={
                                     'w-full rounded-lg bg-primary px-3 py-1 text-white lg:w-auto'
                                 }
@@ -82,18 +95,23 @@ export default function Index({ categories }) {
                                         </td>
                                         <td className="flex flex-row gap-x-3 border-b border-slate-200 p-4">
                                             <a
-                                                href="#"
+                                                href={route(
+                                                    'dashboard.category.edit',
+                                                    item.id,
+                                                )}
                                                 className="block text-sm font-semibold text-slate-800"
                                             >
                                                 Edit
                                             </a>
                                             |
-                                            <a
-                                                href="#"
+                                            <Button
+                                                onClick={(e) =>
+                                                    handleDelete(item.id, e)
+                                                }
                                                 className="block text-sm font-semibold text-slate-800"
                                             >
                                                 Delete
-                                            </a>
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))}
@@ -106,7 +124,10 @@ export default function Index({ categories }) {
                             'mt-3 flex flex-col items-center justify-between gap-y-3 lg:flex-row'
                         }
                     >
-                        <div>Showing 1 to 10 total 10</div>
+                        <div>
+                            Showing {categories.from} to {categories.to} total{' '}
+                            {categories.per_page}
+                        </div>
                         <div
                             className={
                                 'flex flex-wrap items-center justify-center gap-2'
