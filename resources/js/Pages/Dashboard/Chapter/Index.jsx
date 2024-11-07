@@ -1,56 +1,56 @@
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import { Input, Select } from '@headlessui/react';
-import { Link } from '@inertiajs/react';
+import { Button, Input } from '@headlessui/react';
+import { Link, router } from '@inertiajs/react';
 
-export default function Index({ categories }) {
+export default function Index({ classroom,chapters }) {
+    const handleDelete = (id, e) => {
+        e.preventDefault();
+        const isConfirmed = window.confirm(
+            'Are you sure you want to delete this item?',
+        );
+
+        if (isConfirmed) {
+            router.delete(route('dashboard.chapter.destroy', { chapter:id, classroom: classroom.id}));
+        }
+    };
     return (
         <AuthenticatedLayout>
             <div className={'container mx-auto text-accent'}>
                 <div className={'mt-10 rounded-lg bg-white p-4 text-start'}>
+                    <div className={'mb-3 flex flex-col gap-y-3'}>
+                        <div className={'flex justify-between'}>
+                        <Link href={route('dashboard.classroom.index')} className={'text-lg font-bold text-primary'}>{classroom.name}</Link>
+                        <h2 className={'text-lg font-bold'}>List Chapters</h2>
+                        </div>
+                        <hr />
+                    </div>
                     <div
                         className={
-                            'mb-3 flex flex-col items-center justify-between gap-x-3 gap-y-3 lg:flex-row'
+                            'mb-3 flex w-full flex-col items-center justify-between gap-x-3 gap-y-3 lg:flex-row'
                         }
                     >
-                        <div className={'w-full'}>
-                            <form
-                                className={
-                                    'flex w-full flex-col items-start gap-x-3 lg:flex-row lg:items-center'
-                                }
-                            >
-                                <InputLabel>Cari</InputLabel>
-                                <Input
-                                    type={'text'}
-                                    className={
-                                        'h-8 w-full rounded-lg text-xs lg:w-1/2'
-                                    }
-                                ></Input>
-                            </form>
-                        </div>
-                        <div
+                        <form
                             className={
-                                'flex w-full flex-col items-start gap-x-3 gap-y-2 lg:flex-row lg:justify-end'
+                                'flex flex-col items-start gap-x-3 lg:flex-row lg:items-center w-full lg:w-auto '
                             }
                         >
-                            <Select
+                            <InputLabel>Cari</InputLabel>
+                            <Input
+                                type={'text'}
                                 className={
-                                    'h-8 w-full rounded-lg text-xs lg:w-auto'
+                                    'h-8 w-full rounded-lg text-xs'
                                 }
-                            >
-                                <option>10</option>
-                                <option>50</option>
-                                <option>100</option>
-                            </Select>
-                            <Link
-                                href={route('dashboard.category.index')}
-                                className={
-                                    'w-full rounded-lg bg-primary px-3 py-1 text-white lg:w-auto'
-                                }
-                            >
-                                Tambah Baru
-                            </Link>
-                        </div>
+                            ></Input>
+                        </form>
+                        <Link
+                            href={route('dashboard.chapter.create', classroom.id)}
+                            className={
+                                'w-full rounded-lg bg-primary px-3 py-1 text-white lg:w-auto'
+                            }
+                        >
+                            Tambah Baru
+                        </Link>
                     </div>
                     <div className="relative flex h-full w-full flex-col overflow-auto rounded-lg bg-white bg-clip-border text-gray-700">
                         <table className="w-full min-w-max table-auto text-left">
@@ -69,69 +69,40 @@ export default function Index({ categories }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {categories.data.map((item, index) => (
+                                {chapters.map((item, index) => (
                                     <tr
                                         key={index}
                                         className="hover:bg-slate-50"
                                     >
                                         <td className="border-b border-slate-200 p-4">
                                             <p className="block text-sm text-slate-800">
-                                                {item.name}
+                                                {item.title}
                                             </p>
                                         </td>
-                                        <td className="flex flex-row gap-x-3 border-b border-slate-200 p-4">
+                                        <td className="flex flex-row items-center gap-x-3 border-b border-slate-200 p-4">
                                             <a
-                                                href="#"
+                                                href={route(
+                                                    'dashboard.chapter.edit',
+                                                    { chapter:item.id,classroom:classroom.id }
+                                                )}
                                                 className="block text-sm font-semibold text-slate-800"
                                             >
                                                 Edit
                                             </a>
                                             |
-                                            <a
-                                                href="#"
+                                            <Button
+                                                onClick={(e) =>
+                                                    handleDelete(item.id, e)
+                                                }
                                                 className="block text-sm font-semibold text-slate-800"
                                             >
                                                 Delete
-                                            </a>
+                                            </Button>
                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
-                    </div>
-
-                    <div
-                        className={
-                            'mt-3 flex flex-col items-center justify-between gap-y-3 lg:flex-row'
-                        }
-                    >
-                        <div>
-                            Showing {categories.from} to {categories.to} total{' '}
-                            {categories.per_page}
-                        </div>
-                        <div
-                            className={
-                                'flex flex-wrap items-center justify-center gap-2'
-                            }
-                        >
-                            {categories.links.map((link, index) => (
-                                <Link
-                                    key={index}
-                                    href={link.url}
-                                    className={`rounded border p-2 text-sm ${
-                                        link.active
-                                            ? 'border-primary bg-white text-accent hover:bg-primary hover:text-white'
-                                            : 'bg-primary text-white hover:border-primary hover:bg-white hover:text-accent'
-                                    }`}
-                                >
-                                    <div
-                                        dangerouslySetInnerHTML={{
-                                            __html: link.label,
-                                        }}
-                                    ></div>
-                                </Link>
-                            ))}
-                        </div>
                     </div>
                 </div>
             </div>

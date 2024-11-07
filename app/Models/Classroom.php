@@ -22,7 +22,7 @@ class Classroom extends Model
 
             $originalSlug = $slug;
             $count = 1;
-            while (self::query()->where('slug', $slug)->exists()) {
+            while (self::query()->withTrashed()->where('slug', $slug)->exists()) {
                 $slug = $originalSlug . '-' . $count;
                 $count++;
             }
@@ -35,7 +35,7 @@ class Classroom extends Model
 
                 $originalSlug = $slug;
                 $count = 1;
-                while (self::query()->where('slug', $slug)->where('id', '!=', $item->id)->exists()) {
+                while (self::query()->withTrashed()->where('slug', $slug)->where('id', '!=', $item->id)->exists()) {
                     $slug = $originalSlug . '-' . $count;
                     $count++;
                 }

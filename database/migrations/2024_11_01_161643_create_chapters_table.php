@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('slug')->unique();
             $table->softDeletes();
             $table->foreignId('classroom_id')->constrained('classrooms');
+            $table->integer('chapter_order');
             $table->timestamps();
         });
     }

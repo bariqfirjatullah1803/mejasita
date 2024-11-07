@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreChapterRequest;
 use App\Http\Requests\UpdateChapterRequest;
 use App\Models\Chapter;
+use App\Models\Classroom;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -15,39 +16,42 @@ class ChapterController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Classroom $classroom): Response
     {
-        return Inertia::render('Dashboard/Chapters/Index', [
-            'chapters' => Chapter::all()
+        return Inertia::render('Dashboard/Chapter/Index', [
+            'chapters' => Chapter::query()->where('classroom_id', $classroom->id)->get(),
+            'classroom' => $classroom
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(Classroom $classroom): Response
     {
-        return Inertia::render('Dashboard/Chapters/Create');
+        return Inertia::render('Dashboard/Chapter/Create', [
+            'classroom' => $classroom
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreChapterRequest $request): RedirectResponse
+    public function store(StoreChapterRequest $request,Classroom $classroom): RedirectResponse
     {
         $validated = $request->validated();
-
+        $validated['classroom_id'] = $classroom->id;
         Chapter::query()->create($validated);
 
-        return to_route('dashboard.chapter.index');
+        return to_route('dashboard.chapter.index', $classroom->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Chapter $chapter): Response
+    public function show(Chapter $chapter,Classroom $classroom): Response
     {
-        return Inertia::render('Dashboard/Chapters/Show', [
+        return Inertia::render('Dashboard/Chapter/Show', [
             'chapter' => $chapter
         ]);
     }
@@ -55,31 +59,32 @@ class ChapterController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Chapter $chapter): Response
+    public function edit(Classroom $classroom, Chapter $chapter): Response
     {
-        return Inertia::render('Dashboard/Chapters/Edit', [
-            'chapter' => $chapter
+        return Inertia::render('Dashboard/Chapter/Edit', [
+            'chapter' => $chapter,
+            'classroom' => $classroom
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateChapterRequest $request, Chapter $chapter): RedirectResponse
+    public function update(UpdateChapterRequest $request,Classroom $classroom, Chapter $chapter): RedirectResponse
     {
         $validated = $request->validated();
-
+        $validated['classroom_id'] = $classroom->id;
         $chapter->update($validated);
 
-        return to_route('dashboard.chapter.index');
+        return to_route('dashboard.chapter.index',$classroom->id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Chapter $chapter): RedirectResponse
+    public function destroy(Classroom $classroom,Chapter $chapter): RedirectResponse
     {
         $chapter->delete();
-        return to_route('dashboard.chapter.index');
+        return to_route('dashboard.chapter.index',$classroom->id);
     }
 }

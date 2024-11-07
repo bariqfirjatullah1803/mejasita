@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->foreignId('chapter_id')->constrained('chapters');
             $table->foreignId('classroom_id')->constrained('classrooms');
             $table->softDeletes();
+            $table->integer('material_order');
             $table->timestamps();
         });
     }
