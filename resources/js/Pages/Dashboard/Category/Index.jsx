@@ -93,7 +93,7 @@ export default function Index({ categories }) {
                                                 {item.name}
                                             </p>
                                         </td>
-                                        <td className="flex flex-row gap-x-3 border-b border-slate-200 p-4">
+                                        <td className="flex flex-row gap-x-3 border-b border-slate-200 p-4 items-center">
                                             <a
                                                 href={route(
                                                     'dashboard.category.edit',

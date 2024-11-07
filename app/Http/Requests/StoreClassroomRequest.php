@@ -24,8 +24,8 @@ class StoreClassroomRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'slug' => 'required|string|max:255|unique:classrooms,slug',
-            'code' => 'required|string|max:255|unique:classrooms,code',
+            'code' => 'required|string|min:5|max:5|unique:classrooms,code',
+            'category' => 'required|exists:categories,id',
         ];
     }
 }

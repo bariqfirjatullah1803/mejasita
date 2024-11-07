@@ -1,28 +1,87 @@
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import { Button, Input } from '@headlessui/react';
-import { Link } from '@inertiajs/react';
+import { Button, Input, Textarea } from '@headlessui/react';
+import { Link, router, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 
-export default function Edit() {
+function Edit({ classroom }) {
+    const { errors } = usePage().props;
+
+    const [values, setValues] = useState({
+        name: classroom.name,
+        description: classroom.description,
+        code: classroom.code,
+    });
+
+    function handleChange(e) {
+        setValues((values) => ({
+            ...values,
+            [e.target.id]: e.target.value,
+        }));
+    }
+
+    function handleSubmit(e) {
+        e.preventDefault();
+
+        router.put(route('dashboard.classroom.update', classroom.id), values);
+    }
+
     return (
         <AuthenticatedLayout>
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
-                    <form className={'flex flex-col gap-y-4'}>
+                    <form
+                        onSubmit={handleSubmit}
+                        className={'flex flex-col gap-y-4'}
+                    >
                         <h1 className={'text-lg font-bold'}>
-                            Category Create Form
+                            Classroom Edit Form
                         </h1>
                         <hr />
                         <div className={'flex flex-col gap-y-3'}>
-                            <InputLabel>Category Name</InputLabel>
+                            <InputLabel>Name</InputLabel>
                             <Input
+                                id={'name'}
                                 type={'text'}
+                                value={classroom.name}
                                 className={'h-10 w-full rounded-lg'}
+                                required
+                                onChange={handleChange}
                             ></Input>
+                            {errors.name && <div>{errors.name}</div>}
+                        </div>
+                        <div className={'flex flex-col gap-y-3'}>
+                            <InputLabel>Description</InputLabel>
+                            <Textarea
+                                id={'description'}
+                                type={'text'}
+                                className={'w-full rounded-lg'}
+                                onChange={handleChange}
+                                defaultValue={classroom.description}
+                            >
+
+                            </Textarea>
+                            {errors.description && (
+                                <div>{errors.description}</div>
+                            )}
+                        </div>
+                        <div className={'flex flex-col gap-y-3'}>
+                            <InputLabel>Code</InputLabel>
+                            <Input
+                                id={'code'}
+                                type={'text'}
+                                className={'h-10 w-full rounded-lg uppercase'}
+                                required
+                                maxLength={5}
+                                minLength={5}
+                                onChange={handleChange}
+                                value={classroom.code}
+                            ></Input>
+                            {errors.code && <div>{errors.code}</div>}
                         </div>
                         <div className={'flex w-full justify-between'}>
                             <Link
-                                href={route('dashboard.category.index')}
+                                href={route('dashboard.classroom.index')}
                                 className={'text-primary'}
                             >
                                 Back
@@ -42,3 +101,5 @@ export default function Edit() {
         </AuthenticatedLayout>
     );
 }
+
+export default Edit;

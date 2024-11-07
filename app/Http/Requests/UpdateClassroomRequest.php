@@ -24,8 +24,8 @@ class UpdateClassroomRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'slug' => 'required|string|max:255|unique:classrooms,slug,' . $this->route('classroom'),
-            'code' => 'required|string|max:255|unique:classrooms,code,' . $this->route('classroom'),
+            'category' => 'required|exists:categories,id',
+            'code' => 'required|string|min:5|max:5|unique:classrooms,code,' . $this->route('classroom')->id,
         ];
     }
 }

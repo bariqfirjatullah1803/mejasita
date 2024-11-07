@@ -18,8 +18,9 @@ class ClassroomController extends Controller
      */
     public function index(): Response
     {
+        $classrooms = Classroom::query()->with('categories')->paginate(10);
         return Inertia::render('Dashboard/Classroom/Index', [
-            'classrooms' => Classroom::all()
+            'classrooms' => $classrooms,
         ]);
     }
 
@@ -28,8 +29,9 @@ class ClassroomController extends Controller
      */
     public function create(): Response
     {
+        $categories = Category::query()->orderBy('name')->get();
         return Inertia::render('Dashboard/Classroom/Create', [
-            'categories' => Category::all()
+            'categories' => $categories
         ]);
     }
 
@@ -40,9 +42,13 @@ class ClassroomController extends Controller
     {
         $validated = $request->validated();
 
-        Classroom::query()->create($validated);
+        $categoryId = $validated['category'];
+        unset($validated['category']);
 
-        return to_route('classroom.index');
+        $classroom = Classroom::query()->create($validated);
+        $classroom->categories()->attach($categoryId);
+
+        return to_route('dashboard.classroom.index');
     }
 
     /**
@@ -73,9 +79,13 @@ class ClassroomController extends Controller
     {
         $validated = $request->validated();
 
-        $classroom->update($validated);
+        $categoryId = $validated['category'];
+        unset($validated['category']);
 
-        return to_route('classroom.index');
+        $classroom->update($validated);
+        $classroom->categories()->sync($categoryId);
+
+        return to_route('dashboard.classroom.index');
     }
 
     /**
@@ -85,6 +95,6 @@ class ClassroomController extends Controller
     {
         $classroom->delete();
 
-        return to_route('classroom.index');
+        return to_route('dashboard.classroom.index');
     }
 }

@@ -9,11 +9,11 @@ export default function AuthenticatedLayout({ children }) {
     const menu = [
         {
             name: 'Category',
-            link: '',
+            link: route('dashboard.category.index'),
         },
         {
             name: 'Classroom',
-            link: '',
+            link: route('dashboard.classroom.index'),
         },
     ];
 
@@ -199,7 +199,7 @@ export default function AuthenticatedLayout({ children }) {
                         {menu.map((item, index) => (
                             <Link
                                 key={index}
-                                href={'#'}
+                                href={item.link}
                                 className={
                                     'w-fit rounded-lg border border-accent bg-white px-3 py-1'
                                 }
