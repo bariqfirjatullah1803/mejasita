@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->longText('content')->nullable();
+            $table->string('media')->nullable();
             $table->string('type');
             $table->string('slug')->unique();
             $table->foreignId('chapter_id')->constrained('chapters');

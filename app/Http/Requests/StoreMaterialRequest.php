@@ -24,8 +24,8 @@ class StoreMaterialRequest extends FormRequest
         return [
             'title' => 'string|required|max:255',
             'content' => 'nullable|string',
-            'type' => 'string|in:text,quiz',
-            'slug' => 'string|max:255|unique:materials,slug',
+            'media' => 'nullable|file|mimes:pdf',
+            'type' => 'string|in:text,quiz,media',
         ];
     }
 }
