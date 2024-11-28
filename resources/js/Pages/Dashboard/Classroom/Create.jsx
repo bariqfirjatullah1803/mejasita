@@ -2,7 +2,7 @@ import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Button, Input, Select, Textarea } from '@headlessui/react';
 import { Link, router, usePage } from '@inertiajs/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 function Create({ categories }) {
     const { errors } = usePage().props;
@@ -10,8 +10,7 @@ function Create({ categories }) {
     const [values, setValues] = useState({
         name: null,
         description: null,
-        code: null,
-        category: null
+        category: null,
     });
 
     function handleChange(e) {
@@ -28,7 +27,7 @@ function Create({ categories }) {
     }
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout isAdmin={true}>
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
                     <form
@@ -61,19 +60,6 @@ function Create({ categories }) {
                             {errors.description && (
                                 <div>{errors.description}</div>
                             )}
-                        </div>
-                        <div className={'flex flex-col gap-y-3'}>
-                            <InputLabel>Code</InputLabel>
-                            <Input
-                                id={'code'}
-                                type={'text'}
-                                className={'h-10 w-full rounded-lg uppercase'}
-                                required
-                                maxLength={5}
-                                minLength={5}
-                                onChange={handleChange}
-                            ></Input>
-                            {errors.code && <div>{errors.code}</div>}
                         </div>
                         <div className={'flex flex-col gap-y-3'}>
                             <InputLabel>Category</InputLabel>

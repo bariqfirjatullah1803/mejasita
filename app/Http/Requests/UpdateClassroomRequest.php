@@ -25,7 +25,6 @@ class UpdateClassroomRequest extends FormRequest
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'category' => 'required|exists:categories,id',
-            'code' => 'required|string|min:5|max:5|unique:classrooms,code,' . $this->route('classroom')->id,
         ];
     }
 }

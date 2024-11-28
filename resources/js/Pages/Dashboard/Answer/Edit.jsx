@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react';
 
 export default function Edit() {
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout isAdmin={true}>
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
                     <form className={'flex flex-col gap-y-4'}>

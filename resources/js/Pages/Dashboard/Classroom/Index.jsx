@@ -15,7 +15,7 @@ export default function Index({ classrooms }) {
         }
     };
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout isAdmin={true}>
             <div className={'container mx-auto text-accent'}>
                 <div className={'mt-10 rounded-lg bg-white p-4 text-start'}>
                     <div className={'mb-3 flex flex-col gap-y-3'}>
@@ -99,7 +99,13 @@ export default function Index({ classrooms }) {
                                         className="hover:bg-slate-50"
                                     >
                                         <td className="border-b border-slate-200 p-4">
-                                            <Link href={route('dashboard.chapter.index', item.id)} className="block text-sm text-primary">
+                                            <Link
+                                                href={route(
+                                                    'dashboard.chapter.index',
+                                                    item.id,
+                                                )}
+                                                className="block text-sm text-primary"
+                                            >
                                                 {item.name}
                                             </Link>
                                         </td>

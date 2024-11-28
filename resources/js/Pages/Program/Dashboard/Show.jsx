@@ -1,3 +1,4 @@
+import PDFViewer from '@/Components/PDFViewer.jsx';
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
 import {
@@ -6,9 +7,15 @@ import {
     IoIosArrowRoundBack,
 } from 'react-icons/io';
 
-export default function Show() {
-    const [openIndex, setOpenIndex] = useState(null);
+export default function Show({ classroom, material }) {
+    const [openIndex, setOpenIndex] = useState(material.id);
 
+    const material_id_before = classroom.chapters[0].materials[0].id;
+    const material_id_after =
+        classroom.chapters[classroom.chapters.length - 1].materials[
+            classroom.chapters[classroom.chapters.length - 1].materials.length -
+                1
+        ].id;
     const toggleAccordion = (index) => {
         if (openIndex === index) {
             setOpenIndex(null); // Close if it's already open
@@ -27,7 +34,7 @@ export default function Show() {
                     >
                         <IoIosArrowRoundBack className="text-2xl" />
                         <h1 className="text-lg font-semibold">
-                            Belajar dasar dasar javascript
+                            {classroom.name}
                         </h1>
                     </a>
                 </div>
@@ -36,7 +43,9 @@ export default function Show() {
             {/* Parent of a, b, c should be full height */}
             <div className="flex flex-1 flex-row bg-white">
                 <div className="flex flex-1 flex-col">
-                    <div className="flex-1">a</div>
+                    <div className="flex-1">
+                        <PDFViewer url={`/storage/${material.media}`} />
+                    </div>
                     <div className="flex-0">
                         <div
                             className={
@@ -46,14 +55,36 @@ export default function Show() {
                             <div
                                 className={'flex flex-row items-center gap-x-2'}
                             >
-                                <IoIosArrowBack />
-                                <Link>Kembali</Link>
+                                {material.id !== material_id_before && (
+                                    <>
+                                        <IoIosArrowBack />
+                                        <Link
+                                            href={route('program.show', {
+                                                slug: classroom.slug,
+                                                material_id: material_id_before,
+                                            })}
+                                        >
+                                            Kembali
+                                        </Link>
+                                    </>
+                                )}
                             </div>
                             <div
                                 className={'flex flex-row items-center gap-x-2'}
                             >
-                                <Link>Selanjutnya</Link>
-                                <IoIosArrowForward />
+                                {material.id !== material_id_after && (
+                                    <>
+                                        <Link
+                                            href={route('program.show', {
+                                                slug: classroom.slug,
+                                                material_id: material_id_after,
+                                            })}
+                                        >
+                                            Selanjutnya
+                                        </Link>
+                                        <IoIosArrowForward />
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -63,16 +94,24 @@ export default function Show() {
                     <hr />
                     <p>Progress</p>
                     <hr />
-                    <AccordionItem
-                        title="Accordion Item 2"
-                        links={[
-                            { href: '#', label: 'Link A' },
-                            { href: '#', label: 'Link B' },
-                        ]}
-                        index={1}
-                        openIndex={openIndex}
-                        toggleAccordion={toggleAccordion}
-                    />
+                    {classroom.chapters.map((item, index) => (
+                        <AccordionItem
+                            key={index}
+                            title={item.title}
+                            links={item.materials.map((item) => {
+                                return {
+                                    href: route('program.show', {
+                                        slug: classroom.slug,
+                                        material_id: item.id,
+                                    }),
+                                    label: item.title,
+                                };
+                            })}
+                            index={material.id}
+                            openIndex={openIndex}
+                            toggleAccordion={toggleAccordion}
+                        />
+                    ))}
                 </div>
             </div>
         </div>
@@ -99,9 +138,13 @@ function AccordionItem({ title, links, index, openIndex, toggleAccordion }) {
                 <div className="px-3 py-2">
                     <div className={'border-s border-gray-300 px-4'}>
                         {links.map((link, i) => (
-                            <a key={i} href={link.href} className="mb-2 block">
+                            <Link
+                                key={i}
+                                href={link.href}
+                                className="mb-2 block"
+                            >
                                 {link.label}
-                            </a>
+                            </Link>
                         ))}
                     </div>
                 </div>

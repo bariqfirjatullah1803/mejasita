@@ -1,33 +1,38 @@
+import EditorCustom from '@/Components/EditorCustom.jsx';
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Button, Input, Select } from '@headlessui/react';
 import { Link, useForm } from '@inertiajs/react';
-import { Editor } from '@tinymce/tinymce-react/lib/es2015/main/ts/index.js';
 import { useRef, useState } from 'react';
 
 function Create({ chapter }) {
     const editorRef = useRef(null);
-    const log = () => {
-        if (editorRef.current) {
-            console.log(editorRef.current.getContent());
-        }
-    };
 
     const [materialType, setMaterialType] = useState('text');
 
-    const { data, setData, errors, post, progress } = useForm({
+    const { setData, errors, post } = useForm({
         title: '',
-        media: null,
+        media: '',
+        content: '',
+        type: materialType,
     });
 
     function handleSubmit(e) {
         e.preventDefault();
-
         post(route('dashboard.material.store', chapter.id));
     }
 
+    const changeType = (e) => {
+        const value = e.target.value;
+        if (value === 'media') {
+            setData('content', null);
+        }
+        setData('type', value);
+        setMaterialType(value);
+    };
+
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout isAdmin={true}>
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
                     <form
@@ -66,9 +71,7 @@ function Create({ chapter }) {
                                 id={'type'}
                                 className={'h-10 w-full rounded-lg'}
                                 required
-                                onChange={(e) =>
-                                    setMaterialType(e.target.value)
-                                }
+                                onChange={changeType}
                             >
                                 <option value={'text'}>Text</option>
                                 <option value={'media'}>Media</option>
@@ -76,114 +79,10 @@ function Create({ chapter }) {
                             </Select>
                         </div>
                         {materialType === 'text' && (
-                            <>
-                                <Editor
-                                    apiKey="8ruryyv1pw5lv0nudelhfsql8uqcb4ale6qf34711vk5r3iw"
-                                    onInit={(_evt, editor) =>
-                                        (editorRef.current = editor)
-                                    }
-                                    initialValue="<p>This is the initial content of the editor.</p>"
-                                    init={{
-                                        height: 500,
-                                        menubar: false,
-                                        plugins: [
-                                            'advlist',
-                                            'autolink',
-                                            'lists',
-                                            'link',
-                                            'image',
-                                            'charmap',
-                                            'preview',
-                                            'anchor',
-                                            'searchreplace',
-                                            'visualblocks',
-                                            'code',
-                                            'fullscreen',
-                                            'insertdatetime',
-                                            'media',
-                                            'table',
-                                            'code',
-                                            'help',
-                                            'wordcount',
-                                        ],
-                                        toolbar:
-                                            'uundo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                                        content_style:
-                                            "@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap'); * { font-family: 'Plus Jakarta Sans', sans-serif; font-optical-sizing: auto; }",
-                                        automatic_uploads: true,
-                                        file_picker_types: 'image',
-                                        file_picker_callback: (
-                                            cb,
-                                            value,
-                                            meta,
-                                        ) => {
-                                            const input =
-                                                document.createElement('input');
-                                            input.setAttribute('type', 'file');
-                                            input.setAttribute(
-                                                'accept',
-                                                'image/*',
-                                            );
-
-                                            input.addEventListener(
-                                                'change',
-                                                (e) => {
-                                                    const file =
-                                                        e.target.files[0];
-
-                                                    const reader =
-                                                        new FileReader();
-                                                    reader.addEventListener(
-                                                        'load',
-                                                        () => {
-                                                            /*
-                                                  Note: Now we need to register the blob in TinyMCEs image blob
-                                                  registry. In the next release this part hopefully won't be
-                                                  necessary, as we are looking to handle it internally.
-                                                */
-                                                            const id =
-                                                                'blobid' +
-                                                                new Date().getTime();
-                                                            const blobCache =
-                                                                tinymce
-                                                                    .activeEditor
-                                                                    .editorUpload
-                                                                    .blobCache;
-                                                            const base64 =
-                                                                reader.result.split(
-                                                                    ',',
-                                                                )[1];
-                                                            const blobInfo =
-                                                                blobCache.create(
-                                                                    id,
-                                                                    file,
-                                                                    base64,
-                                                                );
-                                                            blobCache.add(
-                                                                blobInfo,
-                                                            );
-
-                                                            /* call the callback and populate the Title field with the file name */
-                                                            cb(
-                                                                blobInfo.blobUri(),
-                                                                {
-                                                                    title: file.name,
-                                                                },
-                                                            );
-                                                        },
-                                                    );
-                                                    reader.readAsDataURL(file);
-                                                },
-                                            );
-
-                                            input.click();
-                                        },
-                                    }}
-                                />
-                                <button onClick={log}>
-                                    Log editor content
-                                </button>
-                            </>
+                            <EditorCustom
+                                setData={setData}
+                                editorRef={editorRef}
+                            />
                         )}
                         {materialType === 'media' && (
                             <div className={'flex flex-col gap-y-3'}>

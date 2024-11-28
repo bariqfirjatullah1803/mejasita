@@ -29,7 +29,7 @@ export default function Edit({ classroom, chapter }) {
         );
     };
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout isAdmin={true}>
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
                     <form
@@ -54,7 +54,10 @@ export default function Edit({ classroom, chapter }) {
                         </div>
                         <div className={'flex w-full justify-between'}>
                             <Link
-                                href={route('dashboard.chapter.index', classroom.id)}
+                                href={route(
+                                    'dashboard.chapter.index',
+                                    classroom.id,
+                                )}
                                 className={'text-primary'}
                             >
                                 Back

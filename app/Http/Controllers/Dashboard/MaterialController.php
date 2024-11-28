@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Chapter;
 use App\Models\Material;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -33,7 +34,7 @@ class MaterialController extends Controller
     {
         $chapter->load('classroom:id,name');
 
-        return Inertia::render('Dashboard/Material/Create',[
+        return Inertia::render('Dashboard/Material/Create', [
             'chapter' => $chapter,
         ]);
     }
@@ -41,9 +42,17 @@ class MaterialController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMaterialRequest $request,Chapter $chapter): RedirectResponse
+    public function store(StoreMaterialRequest $request, Chapter $chapter): RedirectResponse
     {
         $validated = $request->validated();
+        $validated['chapter_id'] = $chapter->id;
+        $validated['classroom_id'] = $chapter->classroom_id;
+
+        if ($validated['type'] === 'media' && $request->hasFile('media')) {
+            $file = Storage::disk('public')->put('media/material', $request->file('media'), 'public');
+
+            $validated['media'] = $file;
+        }
 
         Material::query()->create($validated);
 
@@ -53,7 +62,7 @@ class MaterialController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Chapter $chapter,Material $material): Response
+    public function show(Chapter $chapter, Material $material): Response
     {
         return Inertia::render('Dashboard/Material/Show', [
             'material' => $material,
@@ -64,7 +73,7 @@ class MaterialController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Chapter $chapter,Material $material): Response
+    public function edit(Chapter $chapter, Material $material): Response
     {
         $chapter->load('classroom:id,name');
 
@@ -77,7 +86,7 @@ class MaterialController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMaterialRequest $request,Chapter $chapter, Material $material): RedirectResponse
+    public function update(UpdateMaterialRequest $request, Chapter $chapter, Material $material): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -89,7 +98,7 @@ class MaterialController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Chapter $chapter,Material $material): RedirectResponse
+    public function destroy(Chapter $chapter, Material $material): RedirectResponse
     {
         $material->delete();
 

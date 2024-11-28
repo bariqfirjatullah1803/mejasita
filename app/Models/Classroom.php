@@ -5,19 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Classroom extends Model
 {
     use HasFactory, SoftDeletes;
+
     protected $guarded = ['id'];
 
     protected static function boot(): void
     {
         parent::boot();
 
-        static::creating(function($item) {
+        static::creating(function ($item) {
             $slug = Str::slug($item->name);
 
             $originalSlug = $slug;
@@ -45,7 +47,13 @@ class Classroom extends Model
         });
     }
 
-    public function categories(): BelongsToMany{
-        return $this->belongsToMany(Category::class,'classroom_categories','classroom_id','category_id');
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'classroom_categories', 'classroom_id', 'category_id');
+    }
+
+    public function chapters(): HasMany
+    {
+        return $this->hasMany(Chapter::class);
     }
 }

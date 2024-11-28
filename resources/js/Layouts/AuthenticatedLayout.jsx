@@ -3,7 +3,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function AuthenticatedLayout({ children }) {
+export default function AuthenticatedLayout({ children, isAdmin = false }) {
     const user = usePage().props.auth.user;
 
     const menu = [
@@ -34,15 +34,6 @@ export default function AuthenticatedLayout({ children }) {
                                         className={'h-7 lg:h-10'}
                                     />
                                 </Link>
-                            </div>
-
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                {/*<NavLink*/}
-                                {/*    href={route('dashboard')}*/}
-                                {/*    active={route().current('dashboard')}*/}
-                                {/*>*/}
-                                {/*    Dashboard*/}
-                                {/*</NavLink>*/}
                             </div>
                         </div>
 
@@ -179,37 +170,31 @@ export default function AuthenticatedLayout({ children }) {
                 </div>
             </nav>
 
-            {/*{header && (*/}
-            {/*    <header className="bg-white shadow">*/}
-            {/*        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">*/}
-            {/*            {header}*/}
-            {/*        </div>*/}
-            {/*    </header>*/}
-            {/*)}*/}
-
-            <div className={'container mx-auto mt-10'}>
-                <div
-                    className={
-                        'flex flex-col gap-y-3 rounded-lg bg-white p-4 text-accent'
-                    }
-                >
-                    <h1 className={'text-lg font-normal'}>Management</h1>
-                    <hr />
-                    <div className={'flex flex-row flex-wrap gap-x-3'}>
-                        {menu.map((item, index) => (
-                            <Link
-                                key={index}
-                                href={item.link}
-                                className={
-                                    'w-fit rounded-lg border border-accent bg-white px-3 py-1'
-                                }
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
+            {isAdmin && (
+                <div className={'container mx-auto mt-10'}>
+                    <div
+                        className={
+                            'flex flex-col gap-y-3 rounded-lg bg-white p-4 text-accent'
+                        }
+                    >
+                        <h1 className={'text-lg font-normal'}>Management</h1>
+                        <hr />
+                        <div className={'flex flex-row flex-wrap gap-x-3'}>
+                            {menu.map((item, index) => (
+                                <Link
+                                    key={index}
+                                    href={item.link}
+                                    className={
+                                        'w-fit rounded-lg border border-accent bg-white px-3 py-1'
+                                    }
+                                >
+                                    {item.name}
+                                </Link>
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
+            )}
 
             <main>{children}</main>
         </div>

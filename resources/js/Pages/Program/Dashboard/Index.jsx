@@ -1,6 +1,6 @@
 import { FaBook, FaHistory, FaSearch } from 'react-icons/fa';
 
-export default function Index() {
+export default function Index({ classrooms }) {
     return (
         <div className={'min-h-screen bg-secondary text-accent'}>
             <nav className={'w-100 h-10 bg-white py-6'}>
@@ -88,9 +88,9 @@ export default function Index() {
                     </div>
                     <hr />
                     <div className={'flex flex-col gap-y-3'}>
-                        {Array.from({ length: 10 }).map((_, i) => (
+                        {classrooms.map((item, index) => (
                             <div
-                                key={i}
+                                key={index}
                                 className={
                                     'flex flex-row items-center justify-between rounded-lg bg-secondary px-4 py-3'
                                 }
@@ -100,10 +100,13 @@ export default function Index() {
                                         Sedang dipelajari
                                     </h2>
                                     <h1 className={'text-lg font-normal'}>
-                                        Matematika Aljabar
+                                        {item.name}
                                     </h1>
                                 </div>
-                                <a href={''} className={'text-sm text-primary'}>
+                                <a
+                                    href={route('program.show', item.slug)}
+                                    className={'text-sm text-primary'}
+                                >
                                     Lanjutkan Belajar
                                 </a>
                             </div>

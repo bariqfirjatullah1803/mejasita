@@ -25,7 +25,7 @@ function Create() {
     }
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout isAdmin={true}>
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
                     <form

@@ -4,7 +4,7 @@ import { Button, Input } from '@headlessui/react';
 import { Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-function Create({classroom}) {
+function Create({ classroom }) {
     const { errors } = usePage().props;
 
     const [values, setValues] = useState({
@@ -24,7 +24,7 @@ function Create({classroom}) {
     }
 
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout isAdmin={true}>
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
                     <form
@@ -32,9 +32,15 @@ function Create({classroom}) {
                         className={'flex flex-col gap-y-4'}
                     >
                         <div className={'flex justify-between'}>
-                            <Link href={route('dashboard.classroom.index')}
-                                  className={'text-lg font-bold text-primary'}>{classroom.name}</Link>
-                            <h2 className={'text-lg font-bold'}>Chapter Create Form</h2>
+                            <Link
+                                href={route('dashboard.classroom.index')}
+                                className={'text-lg font-bold text-primary'}
+                            >
+                                {classroom.name}
+                            </Link>
+                            <h2 className={'text-lg font-bold'}>
+                                Chapter Create Form
+                            </h2>
                         </div>
                         <hr />
                         <div className={'flex flex-col gap-y-3'}>
@@ -50,7 +56,10 @@ function Create({classroom}) {
                         </div>
                         <div className={'flex w-full justify-between'}>
                             <Link
-                                href={route('dashboard.chapter.index', classroom.id)}
+                                href={route(
+                                    'dashboard.chapter.index',
+                                    classroom.id,
+                                )}
                                 className={'text-primary'}
                             >
                                 Back

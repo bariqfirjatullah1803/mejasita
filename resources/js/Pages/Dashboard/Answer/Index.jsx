@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react';
 
 export default function Index({ categories }) {
     return (
-        <AuthenticatedLayout>
+        <AuthenticatedLayout isAdmin={true}>
             <div className={'container mx-auto text-accent'}>
                 <div className={'mt-10 rounded-lg bg-white p-4 text-start'}>
                     <div

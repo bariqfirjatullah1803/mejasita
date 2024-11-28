@@ -8,7 +8,7 @@ use App\Http\Controllers\Dashboard\MaterialController;
 use App\Http\Controllers\Dashboard\QuizController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(function () {
+Route::middleware(['auth','role:admin|mentor'])->prefix('dashboard')->name('dashboard.')->group(function () {
     Route::resource('category', CategoryController::class);
     Route::resource('classroom', ClassroomController::class);
     Route::resource('{classroom}/chapter', ChapterController::class);
@@ -16,3 +16,5 @@ Route::middleware('auth')->prefix('dashboard')->name('dashboard.')->group(functi
     Route::resource('{material}/quiz', QuizController::class);
     Route::resource('{quiz}/answer', AnswerController::class);
 });
+
+Route::get('/dashboard', [ClassroomController::class, 'index'])->name('dashboard')->middleware(['auth','role:mentor|admin']);

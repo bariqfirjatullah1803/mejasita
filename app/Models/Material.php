@@ -37,6 +37,7 @@ class Material extends Model
                 ->where('material_order', '>', $material->material_order)
                 ->decrement('material_order');
         });
+
         static::updating(function ($material) {
             if ($material->isDirty('title')) {
                 $slug = Str::slug($material->title);
