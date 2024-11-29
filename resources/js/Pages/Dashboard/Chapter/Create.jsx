@@ -1,7 +1,7 @@
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Button, Input } from '@headlessui/react';
-import { Link, router, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 function Create({ classroom }) {
@@ -25,6 +25,7 @@ function Create({ classroom }) {
 
     return (
         <AuthenticatedLayout isAdmin={true}>
+            <Head title="Create Chapter" />
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
                     <form

@@ -1,7 +1,7 @@
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Button, Input, Select } from '@headlessui/react';
-import { Link, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 
 export default function Index({ categories }) {
     const handleDelete = (id, e) => {
@@ -16,6 +16,7 @@ export default function Index({ categories }) {
     };
     return (
         <AuthenticatedLayout isAdmin={true}>
+            <Head title="List Category" />
             <div className={'container mx-auto text-accent'}>
                 <div className={'mt-10 rounded-lg bg-white p-4 text-start'}>
                     <div className={'mb-3 flex flex-col gap-y-3'}>

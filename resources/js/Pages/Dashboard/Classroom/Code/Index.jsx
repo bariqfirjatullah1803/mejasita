@@ -1,7 +1,7 @@
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Button, Input, Select } from '@headlessui/react';
-import { Link, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 
 export default function Index({ classroom, codes }) {
     const handleDelete = (id, e) => {
@@ -21,12 +21,19 @@ export default function Index({ classroom, codes }) {
     };
     return (
         <AuthenticatedLayout isAdmin={true}>
+            <Head title="List Code" />
             <div className={'container mx-auto text-accent'}>
                 <div className={'mt-10 rounded-lg bg-white p-4 text-start'}>
                     <div className={'mb-3 flex flex-col gap-y-3'}>
-                        <h1 className={'text-lg font-bold'}>
-                            List Code of {classroom.name}
-                        </h1>
+                        <div className={'flex justify-between'}>
+                            <Link
+                                href={route('dashboard.classroom.index')}
+                                className={'text-lg font-bold text-primary'}
+                            >
+                                {classroom.name}
+                            </Link>
+                            <h2 className={'text-lg font-bold'}>List Code</h2>
+                        </div>
                         <hr />
                     </div>
                     <div

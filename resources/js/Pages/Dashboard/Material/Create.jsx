@@ -2,7 +2,7 @@ import EditorCustom from '@/Components/EditorCustom.jsx';
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Button, Input, Select } from '@headlessui/react';
-import { Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 
 function Create({ chapter }) {
@@ -33,6 +33,7 @@ function Create({ chapter }) {
 
     return (
         <AuthenticatedLayout isAdmin={true}>
+            <Head title="Create Material" />
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
                     <form

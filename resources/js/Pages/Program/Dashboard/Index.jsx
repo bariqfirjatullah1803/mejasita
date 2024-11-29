@@ -1,31 +1,12 @@
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import HeroSection from '@/Pages/Program/Dashboard/Component/HeroSection.jsx';
+import { Head } from '@inertiajs/react';
 import { FaBook, FaHistory, FaSearch } from 'react-icons/fa';
 
 export default function Index({ classrooms }) {
     return (
-        <div className={'min-h-screen bg-secondary text-accent'}>
-            <nav className={'w-100 h-10 bg-white py-6'}>
-                <div
-                    className={
-                        'container mx-auto flex h-full flex-row items-center justify-between'
-                    }
-                >
-                    <a href={'#'} className={'text-white'}>
-                        <img
-                            src={'/images/logo.png'}
-                            alt={'logo'}
-                            className={'h-10'}
-                        />
-                    </a>
-                    <a href={'#'} className={'text-white'}>
-                        <img
-                            src={'/images/ic-user.png'}
-                            alt={'logo'}
-                            className={'h-10'}
-                        />
-                    </a>
-                </div>
-            </nav>
+        <AuthenticatedLayout>
+            <Head title="Program" />
             <HeroSection></HeroSection>
             <section
                 className={
@@ -109,6 +90,6 @@ export default function Index({ classrooms }) {
                     </div>
                 </div>
             </section>
-        </div>
+        </AuthenticatedLayout>
     );
 }

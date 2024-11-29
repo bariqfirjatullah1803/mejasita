@@ -1,5 +1,5 @@
 import PDFViewer from '@/Components/PDFViewer.jsx';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import {
     IoIosArrowBack,
@@ -26,17 +26,18 @@ export default function Show({ classroom, material }) {
 
     return (
         <div className="flex h-screen flex-col bg-secondary text-accent">
+            <Head title={classroom.name} />
             <nav className="h-16 w-full border-b border-b-accent bg-white py-6">
                 <div className="mx-auto flex h-full flex-row items-center justify-between px-10">
-                    <a
-                        href="#"
+                    <Link
+                        href="/"
                         className="flex flex-row items-center gap-x-2 text-accent"
                     >
                         <IoIosArrowRoundBack className="text-2xl" />
                         <h1 className="text-lg font-semibold">
                             {classroom.name}
                         </h1>
-                    </a>
+                    </Link>
                 </div>
             </nav>
 
@@ -81,6 +82,19 @@ export default function Show({ classroom, material }) {
                                             })}
                                         >
                                             Selanjutnya
+                                        </Link>
+                                        <IoIosArrowForward />
+                                    </>
+                                )}
+                                {material.id === material_id_after && (
+                                    <>
+                                        <Link
+                                            href={route('program.index', {
+                                                slug: classroom.slug,
+                                                material_id: material_id_after,
+                                            })}
+                                        >
+                                            Selesai
                                         </Link>
                                         <IoIosArrowForward />
                                     </>

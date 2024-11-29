@@ -14,8 +14,15 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
+        if (auth()->user()) {
+            $classrooms = Classroom::query()->whereHas('studentCourses' , function ($query) {
+                $query->where('user_id', auth()->id());
+            })->get();
+        }else{
+            $classrooms = [];
+        }
         return Inertia::render('Program/Dashboard/Index', [
-            'classrooms' => Classroom::all()
+            'classrooms' => $classrooms
         ]);
     }
 
@@ -32,14 +39,14 @@ class DashboardController extends Controller
         $materialId = $request->query('material_id');
 
 
-        if(!$materialId){
+        if (!$materialId) {
             $material = StudentMaterial::query()->join('materials', 'materials.id', '=', 'student_materials.material_id')->join('chapters', 'materials.chapter_id', '=', 'chapters.id')->where('user_id', auth()->id())->where('chapters.classroom_id', $classroom->id)->select('materials.*')->first();
 
 
-            if(!$material){
+            if (!$material) {
                 $material = Material::query()->join('chapters', 'chapters.id', '=', 'materials.chapter_id')->where('chapters.classroom_id', $classroom->id)->select('materials.*')->orderBy('material_order')->first();
             }
-        }else{
+        } else {
             $material = Material::query()->where('id', $materialId)->first();
         }
 
