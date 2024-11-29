@@ -1,3 +1,4 @@
+import HeroSection from '@/Pages/Program/Dashboard/Component/HeroSection.jsx';
 import { FaBook, FaHistory, FaSearch } from 'react-icons/fa';
 
 export default function Index({ classrooms }) {
@@ -25,51 +26,7 @@ export default function Index({ classrooms }) {
                     </a>
                 </div>
             </nav>
-            <section className={'bg-white py-10'}>
-                <div className={'container mx-auto'}>
-                    <div className={'grid grid-cols-5'}>
-                        <div
-                            className={
-                                'col-span-3 flex flex-col justify-center gap-y-3'
-                            }
-                        >
-                            <h1 className={'text-4xl font-semibold'}>
-                                Siap Belajar? <br /> Masukan Kode Kelas Anda di
-                                Bawah Ini!
-                            </h1>
-                            <form
-                                className={'flex flex-col items-start gap-y-3'}
-                            >
-                                <input
-                                    type={'text'}
-                                    className={
-                                        'w-2/5 rounded-lg border-0 bg-[#F3F3F3]'
-                                    }
-                                />
-                                <button
-                                    type={'submit'}
-                                    className={
-                                        'rounded-lg bg-primary px-12 py-1 text-2xl font-bold text-white'
-                                    }
-                                >
-                                    JOIN
-                                </button>
-                            </form>
-                        </div>
-                        <div
-                            className={
-                                'col-span-2 flex items-center justify-end'
-                            }
-                        >
-                            <img
-                                src={'/images/hero-section.png'}
-                                alt={'hero-section'}
-                                className={'w-full'}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <HeroSection></HeroSection>
             <section
                 className={
                     'container mx-auto mt-10 grid w-full grid-cols-3 gap-x-5'

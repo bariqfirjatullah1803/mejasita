@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Program;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use App\Models\Classroom;
+use App\Models\ClassroomCode;
+use App\Models\StudentCourse;
 use App\Models\Transaction;
+use Illuminate\Http\RedirectResponse;
 
 class TransactionController extends Controller
 {
@@ -28,9 +32,25 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTransactionRequest $request)
+    public function store(StoreTransactionRequest $request): RedirectResponse
     {
-        //
+        $validated = $request->validated();
+
+        $classroomCode = ClassroomCode::query()->where('code', $validated['code'])->first();
+        $classroom = Classroom::query()->find($classroomCode->classroom_id);
+
+        Transaction::query()->create([
+            'classroom_code_id' => $classroomCode->id,
+            'classroom_id' => $classroom->id,
+            'user_id' => auth()->id()
+        ]);
+
+        StudentCourse::query()->create([
+            'user_id' => auth()->id(),
+            'classroom_id' => $classroom->id,
+        ]);
+
+        return to_route('program.show', $classroom->slug);
     }
 
     /**

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('invoice')->unique();
+            $table->foreignId('classroom_code_id')->constrained('classroom_codes');
             $table->foreignId('classroom_id')->constrained('classrooms');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
