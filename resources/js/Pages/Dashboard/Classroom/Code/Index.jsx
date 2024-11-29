@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Button, Input, Select } from '@headlessui/react';
 import { Link, router } from '@inertiajs/react';
 
-export default function Index({ classrooms }) {
+export default function Index({ classroom, codes }) {
     const handleDelete = (id, e) => {
         e.preventDefault();
         const isConfirmed = window.confirm(
@@ -11,7 +11,12 @@ export default function Index({ classrooms }) {
         );
 
         if (isConfirmed) {
-            router.delete(route('dashboard.classroom.destroy', id));
+            router.delete(
+                route('dashboard.code.destroy', {
+                    code: id,
+                    classroom: classroom.id,
+                }),
+            );
         }
     };
     return (
@@ -19,7 +24,9 @@ export default function Index({ classrooms }) {
             <div className={'container mx-auto text-accent'}>
                 <div className={'mt-10 rounded-lg bg-white p-4 text-start'}>
                     <div className={'mb-3 flex flex-col gap-y-3'}>
-                        <h1 className={'text-lg font-bold'}>List Classrooms</h1>
+                        <h1 className={'text-lg font-bold'}>
+                            List Code of {classroom.name}
+                        </h1>
                         <hr />
                     </div>
                     <div
@@ -57,7 +64,10 @@ export default function Index({ classrooms }) {
                                 <option>100</option>
                             </Select>
                             <Link
-                                href={route('dashboard.classroom.create')}
+                                href={route(
+                                    'dashboard.code.create',
+                                    classroom.id,
+                                )}
                                 className={
                                     'w-full rounded-lg bg-primary px-3 py-1 text-white lg:w-auto'
                                 }
@@ -72,17 +82,12 @@ export default function Index({ classrooms }) {
                                 <tr>
                                     <th className="border-b border-slate-300 bg-primary p-4">
                                         <p className="block text-sm font-normal leading-none text-white">
-                                            Name
-                                        </p>
-                                    </th>
-                                    <th className="border-b border-slate-300 bg-primary p-4">
-                                        <p className="block text-sm font-normal leading-none text-white">
                                             Code
                                         </p>
                                     </th>
                                     <th className="border-b border-slate-300 bg-primary p-4">
                                         <p className="block text-sm font-normal leading-none text-white">
-                                            Category
+                                            Capacity
                                         </p>
                                     </th>
                                     <th className="border-b border-slate-300 bg-primary p-4">
@@ -93,44 +98,29 @@ export default function Index({ classrooms }) {
                                 </tr>
                             </thead>
                             <tbody>
-                                {classrooms.data.map((item, index) => (
+                                {codes.data.map((item, index) => (
                                     <tr
                                         key={index}
                                         className="hover:bg-slate-50"
                                     >
                                         <td className="border-b border-slate-200 p-4">
-                                            <Link
-                                                href={route(
-                                                    'dashboard.chapter.index',
-                                                    item.id,
-                                                )}
-                                                className="block text-sm text-primary"
-                                            >
-                                                {item.name}
-                                            </Link>
-                                        </td>
-                                        <td className="border-b border-slate-200 p-4">
-                                            <p className="block text-sm font-bold text-slate-800">
-                                                <Link
-                                                    href={route(
-                                                        'dashboard.code.index',
-                                                        item.id,
-                                                    )}
-                                                >
-                                                    Lihat
-                                                </Link>
+                                            <p className="block text-sm text-slate-800">
+                                                {item.code}
                                             </p>
                                         </td>
                                         <td className="border-b border-slate-200 p-4">
                                             <p className="block text-sm text-slate-800">
-                                                {item.categories[0].name}
+                                                {item.capacity}
                                             </p>
                                         </td>
                                         <td className="flex flex-row items-center gap-x-3 border-b border-slate-200 p-4">
                                             <a
                                                 href={route(
-                                                    'dashboard.classroom.edit',
-                                                    item.id,
+                                                    'dashboard.code.edit',
+                                                    {
+                                                        code: item.id,
+                                                        classroom: classroom.id,
+                                                    },
                                                 )}
                                                 className="block text-sm font-semibold text-slate-800"
                                             >
@@ -158,15 +148,15 @@ export default function Index({ classrooms }) {
                         }
                     >
                         <div>
-                            Showing {classrooms.from} to {classrooms.to} total{' '}
-                            {classrooms.per_page}
+                            Showing {codes.from} to {codes.to} total{' '}
+                            {codes.per_page}
                         </div>
                         <div
                             className={
                                 'flex flex-wrap items-center justify-center gap-2'
                             }
                         >
-                            {classrooms.links.map((link, index) => (
+                            {codes.links.map((link, index) => (
                                 <Link
                                     key={index}
                                     href={link.url}

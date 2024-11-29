@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('classroom_id')->constrained('classrooms');
             $table->string('code')->unique();
+            $table->integer('capacity')->default(0);
             $table->timestamps();
         });
     }

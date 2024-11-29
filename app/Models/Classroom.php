@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
+use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
 
 class Classroom extends Model
 {
@@ -55,5 +56,10 @@ class Classroom extends Model
     public function chapters(): HasMany
     {
         return $this->hasMany(Chapter::class);
+    }
+
+    public function codes(): HasMany
+    {
+        return $this->hasMany(ClassroomCode::class);
     }
 }

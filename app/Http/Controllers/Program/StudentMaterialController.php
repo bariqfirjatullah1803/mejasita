@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Program;
 
-use App\Http\Requests\StoreClassroomCodeRequest;
-use App\Http\Requests\UpdateClassroomCodeRequest;
-use App\Models\ClassroomCode;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreStudentMaterialRequest;
+use App\Http\Requests\UpdateStudentMaterialRequest;
+use App\Models\StudentMaterial;
 
-class ClassroomCodeController extends Controller
+class StudentMaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class ClassroomCodeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreClassroomCodeRequest $request)
+    public function store(StoreStudentMaterialRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class ClassroomCodeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ClassroomCode $classroomCode)
+    public function show(StudentMaterial $studentMaterial)
     {
         //
     }
@@ -43,7 +44,7 @@ class ClassroomCodeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ClassroomCode $classroomCode)
+    public function edit(StudentMaterial $studentMaterial)
     {
         //
     }
@@ -51,7 +52,7 @@ class ClassroomCodeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateClassroomCodeRequest $request, ClassroomCode $classroomCode)
+    public function update(UpdateStudentMaterialRequest $request, StudentMaterial $studentMaterial)
     {
         //
     }
@@ -59,7 +60,7 @@ class ClassroomCodeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ClassroomCode $classroomCode)
+    public function destroy(StudentMaterial $studentMaterial)
     {
         //
     }
