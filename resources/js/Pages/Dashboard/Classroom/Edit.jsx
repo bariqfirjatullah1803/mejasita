@@ -10,7 +10,6 @@ function Edit({ classroom }) {
     const [values, setValues] = useState({
         name: classroom.name,
         description: classroom.description,
-        code: classroom.code,
     });
 
     function handleChange(e) {
@@ -63,20 +62,6 @@ function Edit({ classroom }) {
                             {errors.description && (
                                 <div>{errors.description}</div>
                             )}
-                        </div>
-                        <div className={'flex flex-col gap-y-3'}>
-                            <InputLabel>Code</InputLabel>
-                            <Input
-                                id={'code'}
-                                type={'text'}
-                                className={'h-10 w-full rounded-lg uppercase'}
-                                required
-                                maxLength={5}
-                                minLength={5}
-                                onChange={handleChange}
-                                value={classroom.code}
-                            ></Input>
-                            {errors.code && <div>{errors.code}</div>}
                         </div>
                         <div className={'flex w-full justify-between'}>
                             <Link

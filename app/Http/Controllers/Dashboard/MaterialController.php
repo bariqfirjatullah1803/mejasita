@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateMaterialRequest;
 use App\Models\Chapter;
 use App\Models\Material;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -89,6 +90,18 @@ class MaterialController extends Controller
     public function update(UpdateMaterialRequest $request, Chapter $chapter, Material $material): RedirectResponse
     {
         $validated = $request->validated();
+        $validated['chapter_id'] = $chapter->id;
+        $validated['classroom_id'] = $chapter->classroom_id;
+
+        if ($validated['type'] === 'media' && $request->hasFile('media')) {
+            if (Storage::disk('public')->exists($material->media)) {
+                Storage::disk('public')->delete($material->media);
+            }
+
+            $file = Storage::disk('public')->put('media/material', $request->file('media'), 'public');
+
+            $validated['media'] = $file;
+        }
 
         $material->update($validated);
 

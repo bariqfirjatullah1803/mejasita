@@ -1,43 +1,40 @@
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import { Button, Input } from '@headlessui/react';
-import { Link, router, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Edit({ classroom, chapter }) {
-    const { errors } = usePage().props;
-    const [values, setValues] = useState({
-        title: chapter.title,
+function Edit({ chapter, material }) {
+    const { setData, data, errors, post } = useForm({
+        _method: 'put',
+        title: material.title,
+        media: material.media,
+        content: '',
+        type: 'media',
     });
 
-    const handleChange = (e) => {
-        setValues((values) => ({
-            ...values,
-            [e.target.id]: e.target.value,
-        }));
-    };
-
-    const handleSubmit = (e) => {
+    function handleSubmit(e) {
         e.preventDefault();
-
-        router.put(
-            route('dashboard.chapter.update', {
+        console.log(data);
+        post(
+            route('dashboard.material.update', {
                 chapter: chapter.id,
-                classroom: classroom.id,
+                material: material.id,
             }),
-            values,
         );
-    };
+    }
+
     return (
         <AuthenticatedLayout isAdmin={true}>
+            <Head title="Edit Classroom" />
             <div className={'container mx-auto'}>
                 <div className={'mt-10 rounded-lg bg-white p-10 text-accent'}>
                     <form
                         onSubmit={handleSubmit}
                         className={'flex flex-col gap-y-4'}
+                        encType={'multipart/form-data'}
                     >
                         <h1 className={'text-lg font-bold'}>
-                            Chapter Update Form
+                            Material Edit Form
                         </h1>
                         <hr />
                         <div className={'flex flex-col gap-y-3'}>
@@ -45,18 +42,41 @@ export default function Edit({ classroom, chapter }) {
                             <Input
                                 id={'title'}
                                 type={'text'}
-                                value={values.title}
+                                defaultValue={material.title}
                                 className={'h-10 w-full rounded-lg'}
-                                onChange={handleChange}
-                                required
+                                onChange={(e) =>
+                                    setData('title', e.target.value)
+                                }
                             ></Input>
                             {errors.title && <div>{errors.title}</div>}
+                        </div>
+                        <div className={'flex flex-col gap-y-3'}>
+                            <InputLabel>File Material</InputLabel>
+                            <Input
+                                id={'media'}
+                                type={'file'}
+                                className={
+                                    'h-10 w-full rounded-lg border border-black px-3 py-1 text-sm'
+                                }
+                                onChange={(e) =>
+                                    setData('media', e.target.files[0])
+                                }
+                            ></Input>
+                            <a
+                                href={`/storage/${material.media}`}
+                                className={'text-blue-600'}
+                                target={'_blank'}
+                                rel="noreferrer"
+                            >
+                                Open File
+                            </a>
+                            {errors.media && <div>{errors.media}</div>}
                         </div>
                         <div className={'flex w-full justify-between'}>
                             <Link
                                 href={route(
                                     'dashboard.chapter.index',
-                                    classroom.id,
+                                    chapter.id,
                                 )}
                                 className={'text-primary'}
                             >
@@ -77,3 +97,5 @@ export default function Edit({ classroom, chapter }) {
         </AuthenticatedLayout>
     );
 }
+
+export default Edit;

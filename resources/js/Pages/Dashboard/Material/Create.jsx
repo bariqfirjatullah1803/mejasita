@@ -1,14 +1,14 @@
 import EditorCustom from '@/Components/EditorCustom.jsx';
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import { Button, Input, Select } from '@headlessui/react';
+import { Button, Input } from '@headlessui/react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 
 function Create({ chapter }) {
     const editorRef = useRef(null);
 
-    const [materialType, setMaterialType] = useState('text');
+    const [materialType, setMaterialType] = useState('media');
 
     const { setData, errors, post } = useForm({
         title: '',
@@ -66,19 +66,19 @@ function Create({ chapter }) {
                             ></Input>
                             {errors.title && <div>{errors.title}</div>}
                         </div>
-                        <div className={'flex flex-col gap-y-3'}>
-                            <InputLabel>Type</InputLabel>
-                            <Select
-                                id={'type'}
-                                className={'h-10 w-full rounded-lg'}
-                                required
-                                onChange={changeType}
-                            >
-                                <option value={'text'}>Text</option>
-                                <option value={'media'}>Media</option>
-                                <option value={'quiz'}>Quiz</option>
-                            </Select>
-                        </div>
+                        {/*<div className={'flex flex-col gap-y-3'}>*/}
+                        {/*    <InputLabel>Type</InputLabel>*/}
+                        {/*    <Select*/}
+                        {/*        id={'type'}*/}
+                        {/*        className={'h-10 w-full rounded-lg'}*/}
+                        {/*        required*/}
+                        {/*        onChange={changeType}*/}
+                        {/*    >*/}
+                        {/*        <option value={'text'}>Text</option>*/}
+                        {/*        <option value={'media'}>Media</option>*/}
+                        {/*        <option value={'quiz'}>Quiz</option>*/}
+                        {/*    </Select>*/}
+                        {/*</div>*/}
                         {materialType === 'text' && (
                             <EditorCustom
                                 setData={setData}
@@ -87,7 +87,7 @@ function Create({ chapter }) {
                         )}
                         {materialType === 'media' && (
                             <div className={'flex flex-col gap-y-3'}>
-                                <InputLabel>File</InputLabel>
+                                <InputLabel>File Material</InputLabel>
                                 <Input
                                     id={'media'}
                                     type={'file'}

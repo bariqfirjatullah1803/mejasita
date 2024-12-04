@@ -22,10 +22,9 @@ class UpdateMaterialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'string|required|max:255',
-            'content' => 'nullable|string',
-            'type' => 'string|in:text,quiz',
-            'slug' => 'string|max:255|unique:materials,slug,' . $this->route('material'),
+            'title' => 'required|string|max:255',
+            'media' => 'nullable|file|mimes:pdf',
+            'type' => 'string|in:text,quiz,media',
         ];
     }
 }
