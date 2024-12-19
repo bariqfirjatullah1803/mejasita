@@ -1,66 +1,112 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# **Dokumentasi Aplikasi LMS Mejasita**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## **Pendahuluan**
+LMS Mejasita adalah sistem manajemen pembelajaran yang memungkinkan berbagai pihak untuk terlibat dalam proses pembelajaran secara online. Platform ini dibangun menggunakan **Laravel** untuk back-end dan **React** untuk front-end. Aplikasi ini memiliki 3 peran utama: **Admin**, **Mentor**, dan **Siswa**. Masing-masing peran memiliki hak akses dan fungsionalitas yang berbeda.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## **Fitur Utama**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 1. **Peran Pengguna**
+Aplikasi LMS Mejasita memiliki tiga peran pengguna yang berbeda, yaitu:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Admin**: Pengelola utama aplikasi. Admin memiliki akses penuh untuk mengelola kategori dan kelas yang ada.
+- **Mentor**: Pengajar yang dapat membuat dan mengelola kelas serta materi pembelajaran (video dan PDF).
+- **Siswa**: Pengguna yang dapat mendaftar pada kelas menggunakan kode yang disediakan oleh mentor, dan mengikuti materi yang ada di dalam kelas.
 
-## Learning Laravel
+### 2. **Proses Pendaftaran dan Pengelolaan Kelas**
+#### **Admin dan Mentor**
+- **Admin dan Mentor** memiliki hak yang sama dalam hal **mengelola kategori** dan **kelas**.
+- Admin dan Mentor dapat:
+    - Menambah, mengedit, dan menghapus kategori kelas.
+    - Membuat dan mengelola kelas.
+    - Mengelola materi pembelajaran yang terdiri dari file **video** dan **PDF** di dalam setiap kelas.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+#### **Siswa**
+- **Siswa** hanya dapat mendaftar ke kelas yang telah disediakan oleh mentor menggunakan **kode pendaftaran** yang diberikan oleh mentor.
+- Setelah mendaftar, siswa dapat mengakses materi pembelajaran yang ada di dalam kelas, termasuk video dan PDF.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## **Fitur Kelas dan Materi**
 
-## Laravel Sponsors
+### **Kategori Kelas**
+Kelas dikelompokkan ke dalam kategori untuk memudahkan pencarian dan pengelompokan kelas. Admin dan Mentor dapat membuat kategori baru dan mengorganisir kelas sesuai dengan kategori tersebut.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### **Kelas**
+- Setiap kelas memiliki deskripsi, daftar materi pembelajaran, dan instruksi yang dapat diakses oleh siswa setelah mereka mendaftar.
+- Kelas dapat memiliki beberapa **materi** dengan dua jenis format: **video** dan **PDF**.
+    - **Video**: Materi dalam bentuk video pembelajaran yang dapat diputar oleh siswa.
+    - **PDF**: Materi dalam bentuk dokumen PDF yang dapat diunduh atau dibaca oleh siswa.
 
-### Premium Partners
+### **Kode Pendaftaran**
+- Mentor dapat memberikan **kode pendaftaran** kepada siswa agar mereka dapat mendaftar di kelas tertentu.
+- Siswa hanya perlu memasukkan kode pendaftaran di halaman pendaftaran kelas untuk mendapatkan akses ke materi yang relevan.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+---
 
-## Contributing
+## **Panduan Penggunaan**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### **1. Admin**
+Sebagai Admin, Anda memiliki akses penuh untuk mengelola aplikasi. Berikut adalah tugas yang bisa Anda lakukan:
+- **Mengelola Kategori Kelas**: Menambah, mengedit, dan menghapus kategori kelas.
+- **Mengelola Kelas**: Membuat, mengedit, dan menghapus kelas. Anda juga dapat menambahkan materi pembelajaran dalam format video dan PDF di setiap kelas.
 
-## Code of Conduct
+### **2. Mentor**
+Sebagai Mentor, Anda dapat:
+- **Mengelola Kelas**: Membuat kelas baru dan menambahkan materi pembelajaran (video dan PDF).
+- **Memberikan Kode Pendaftaran**: Setiap kelas yang Anda buat akan memiliki kode pendaftaran yang dapat dibagikan kepada siswa agar mereka dapat mendaftar dan mengakses kelas.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### **3. Siswa**
+Sebagai Siswa, Anda hanya dapat:
+- **Mendaftar ke Kelas**: Untuk mendaftar ke kelas, Anda memerlukan **kode pendaftaran** dari Mentor.
+- **Mengakses Materi**: Setelah mendaftar, Anda dapat mengakses semua materi yang ada di dalam kelas, baik dalam format video maupun PDF.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## **Alur Proses**
+### **1. Admin**
+- Login sebagai Admin.
+- Buat kategori kelas baru.
+- Buat kelas dan tentukan kategori.
+- Tambahkan materi pembelajaran dalam bentuk video dan PDF ke dalam kelas.
+- Atur dan kelola kelas yang ada.
 
-## License
+### **2. Mentor**
+- Login sebagai Mentor.
+- Buat kelas dan tentukan kategori.
+- Tambahkan materi pembelajaran (video dan PDF) ke kelas yang telah dibuat.
+- Dapatkan **kode pendaftaran** untuk dibagikan ke siswa.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### **3. Siswa**
+- Login sebagai Siswa.
+- Masukkan kode pendaftaran yang diberikan oleh Mentor.
+- Dapatkan akses ke kelas dan materi pembelajaran.
+- Akses materi dalam format video atau PDF.
+
+---
+
+## **Ringkasan Fitur**
+
+| Fitur                          | Admin      | Mentor     | Siswa      |
+|---------------------------------|------------|------------|------------|
+| Mengelola Kategori             | ✓          | ✓          | -          |
+| Mengelola Kelas                | ✓          | ✓          | -          |
+| Menambah Materi Pembelajaran   | ✓          | ✓          | -          |
+| Memberikan Kode Pendaftaran    | -          | ✓          | -          |
+| Mendaftar ke Kelas dengan Kode | -          | -          | ✓          |
+| Mengakses Materi Kelas         | -          | -          | ✓          |
+
+---
+
+## **Teknologi yang Digunakan**
+- **Back-End**: Laravel
+- **Front-End**: React
+- **Database**: MySQL
+
+---
+
+## **Kesimpulan**
+LMS Mejasita dirancang untuk memberikan pengalaman pembelajaran yang mudah digunakan bagi semua pihak yang terlibat. Dengan pembagian peran yang jelas antara Admin, Mentor, dan Siswa, platform ini memudahkan pengelolaan kelas dan materi pembelajaran, serta memberikan kemudahan bagi siswa untuk mengikuti kelas secara online.
+
+Dokumentasi ini diharapkan dapat memberikan pemahaman yang jelas mengenai aplikasi dan fungsionalitas yang ada. Jika ada pertanyaan lebih lanjut, Anda dapat menghubungi tim pengembang.
