@@ -1,16 +1,17 @@
 import EditorCustom from '@/Components/EditorCustom.jsx';
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import { Button, Input } from '@headlessui/react';
+import { Button, Input, Select } from '@headlessui/react';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
+import { data } from "autoprefixer";
 
 function Create({ chapter }) {
     const editorRef = useRef(null);
 
     const [materialType, setMaterialType] = useState('media');
 
-    const { setData, errors, post } = useForm({
+    const { setData, errors, post, setError } = useForm({
         title: '',
         media: '',
         content: '',
@@ -29,6 +30,24 @@ function Create({ chapter }) {
         }
         setData('type', value);
         setMaterialType(value);
+    };
+
+    const matchYoutubeUrl = (url) => {
+        const pattern =
+            /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+        const matches = url.match(pattern);
+        return matches ? matches[1] : false;
+    };
+
+    const handleUrlChange = (e) => {
+        e.preventDefault();
+        const value = e.target.value;
+        const match = matchYoutubeUrl(value);
+        if (match) {
+            setData('content', value);
+        } else {
+            setError('content', 'Youtube url is not valid');
+        }
     };
 
     return (
@@ -66,19 +85,19 @@ function Create({ chapter }) {
                             ></Input>
                             {errors.title && <div>{errors.title}</div>}
                         </div>
-                        {/*<div className={'flex flex-col gap-y-3'}>*/}
-                        {/*    <InputLabel>Type</InputLabel>*/}
-                        {/*    <Select*/}
-                        {/*        id={'type'}*/}
-                        {/*        className={'h-10 w-full rounded-lg'}*/}
-                        {/*        required*/}
-                        {/*        onChange={changeType}*/}
-                        {/*    >*/}
-                        {/*        <option value={'text'}>Text</option>*/}
-                        {/*        <option value={'media'}>Media</option>*/}
-                        {/*        <option value={'quiz'}>Quiz</option>*/}
-                        {/*    </Select>*/}
-                        {/*</div>*/}
+                        <div className={'flex flex-col gap-y-3'}>
+                            <InputLabel>Type</InputLabel>
+                            <Select
+                                id={'type'}
+                                className={'h-10 w-full rounded-lg'}
+                                required
+                                onChange={changeType}
+                            >
+                                <option value={'media'}>Media</option>
+                                {/*<option value={'text'}>Text</option>*/}
+                                <option value={'video'}>Video</option>
+                            </Select>
+                        </div>
                         {materialType === 'text' && (
                             <EditorCustom
                                 setData={setData}
@@ -103,6 +122,18 @@ function Create({ chapter }) {
                             </div>
                         )}
                         {materialType === 'quiz' && <div>Quiz</div>}
+                        {materialType === 'video' && (
+                            <div className={'flex flex-col gap-y-3'}>
+                                <InputLabel>Youtube URL</InputLabel>
+                                <Input
+                                    id={'content'}
+                                    type={'text'}
+                                    className={'h-10 w-full rounded-lg'}
+                                    onChange={handleUrlChange}
+                                ></Input>
+                                {errors.content && <div>{errors.content}</div>}
+                            </div>
+                        )}
                         <div className={'flex w-full justify-between'}>
                             <Link
                                 href={route(

@@ -1,20 +1,22 @@
 import InputLabel from '@/Components/InputLabel.jsx';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import { Button, Input } from '@headlessui/react';
+import { Button, Input, Select } from '@headlessui/react';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useState } from 'react';
 
 function Edit({ chapter, material }) {
-    const { setData, data, errors, post } = useForm({
+    const [materialType, setMaterialType] = useState(material.type);
+
+    const { setData, data, errors, post, setError } = useForm({
         _method: 'put',
         title: material.title,
         media: material.media,
         content: '',
-        type: 'media',
+        type: materialType,
     });
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log(data);
         post(
             route('dashboard.material.update', {
                 chapter: chapter.id,
@@ -22,6 +24,32 @@ function Edit({ chapter, material }) {
             }),
         );
     }
+
+    const changeType = (e) => {
+        const value = e.target.value;
+        if (value === 'media') {
+            setData('content', null);
+        }
+        setData('type', value);
+        setMaterialType(value);
+    };
+    const matchYoutubeUrl = (url) => {
+        const pattern =
+            /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+        const matches = url.match(pattern);
+        return matches ? matches[1] : false;
+    };
+
+    const handleUrlChange = (e) => {
+        e.preventDefault();
+        const value = e.target.value;
+        const match = matchYoutubeUrl(value);
+        if (match) {
+            setData('content', value);
+        } else {
+            setError('content', 'Youtube url is not valid');
+        }
+    };
 
     return (
         <AuthenticatedLayout isAdmin={true}>
@@ -51,27 +79,56 @@ function Edit({ chapter, material }) {
                             {errors.title && <div>{errors.title}</div>}
                         </div>
                         <div className={'flex flex-col gap-y-3'}>
-                            <InputLabel>File Material</InputLabel>
-                            <Input
-                                id={'media'}
-                                type={'file'}
-                                className={
-                                    'h-10 w-full rounded-lg border border-black px-3 py-1 text-sm'
-                                }
-                                onChange={(e) =>
-                                    setData('media', e.target.files[0])
-                                }
-                            ></Input>
-                            <a
-                                href={`/storage/${material.media}`}
-                                className={'text-blue-600'}
-                                target={'_blank'}
-                                rel="noreferrer"
+                            <InputLabel>Type</InputLabel>
+                            <Select
+                                id={'type'}
+                                className={'h-10 w-full rounded-lg'}
+                                defaultValue={material.type}
+                                required
+                                onChange={changeType}
                             >
-                                Open File
-                            </a>
-                            {errors.media && <div>{errors.media}</div>}
+                                <option value={'media'}>Media</option>
+                                {/*<option value={'text'}>Text</option>*/}
+                                <option value={'video'}>Video</option>
+                            </Select>
                         </div>
+                        {materialType && materialType === 'media' && (
+                            <div className={'flex flex-col gap-y-3'}>
+                                <InputLabel>File Material</InputLabel>
+                                <Input
+                                    id={'media'}
+                                    type={'file'}
+                                    className={
+                                        'h-10 w-full rounded-lg border border-black px-3 py-1 text-sm'
+                                    }
+                                    onChange={(e) =>
+                                        setData('media', e.target.files[0])
+                                    }
+                                ></Input>
+                                <a
+                                    href={`/storage/${material.media}`}
+                                    className={'text-blue-600'}
+                                    target={'_blank'}
+                                    rel="noreferrer"
+                                >
+                                    Open File
+                                </a>
+                                {errors.media && <div>{errors.media}</div>}
+                            </div>
+                        )}
+                        {materialType === 'video' && (
+                            <div className={'flex flex-col gap-y-3'}>
+                                <InputLabel>Youtube URL</InputLabel>
+                                <Input
+                                    id={'content'}
+                                    type={'text'}
+                                    defaultValue={material.content}
+                                    className={'h-10 w-full rounded-lg'}
+                                    onChange={handleUrlChange}
+                                ></Input>
+                                {errors.content && <div>{errors.content}</div>}
+                            </div>
+                        )}
                         <div className={'flex w-full justify-between'}>
                             <Link
                                 href={route(

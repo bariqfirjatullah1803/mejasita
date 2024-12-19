@@ -24,7 +24,7 @@ class UpdateMaterialRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'media' => 'nullable|file|mimes:pdf',
-            'type' => 'string|in:text,quiz,media',
+            'type' => 'string|in:text,quiz,media,video',
         ];
     }
 }

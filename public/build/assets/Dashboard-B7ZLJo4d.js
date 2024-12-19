@@ -1,1 +1,0 @@
-import{j as t,Y as a}from"./app-BzAoBXTv.js";import{A as e}from"./AuthenticatedLayout-VwwM4rUS.js";import"./transition-CH7iv4xw.js";function i(){return t.jsx(e,{header:t.jsx("h2",{className:"text-xl font-semibold leading-tight text-gray-800",children:"Dashboard"}),children:t.jsx(a,{title:"Dashboard"})})}export{i as default};

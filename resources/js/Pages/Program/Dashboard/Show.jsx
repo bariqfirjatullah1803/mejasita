@@ -6,6 +6,7 @@ import {
     IoIosArrowForward,
     IoIosArrowRoundBack,
 } from 'react-icons/io';
+import ReactPlayer from 'react-player/youtube';
 
 export default function Show({ classroom, material }) {
     const [openIndex, setOpenIndex] = useState(material.id);
@@ -45,7 +46,18 @@ export default function Show({ classroom, material }) {
             <div className="flex flex-1 flex-row bg-white">
                 <div className="flex flex-1 flex-col">
                     <div className="flex-1">
-                        <PDFViewer url={`/storage/${material.media}`} />
+                        {material.type === 'media' && (
+                            <PDFViewer url={`/storage/${material.media}`} />
+                        )}
+                        {material.type === 'video' && (
+                            <ReactPlayer
+                                key={1}
+                                controls={true}
+                                url="https://youtu.be/q8J2niv2hlY?si=BfLaDP98k3o2nm0X"
+                                width="100%"
+                                height="100%"
+                            />
+                        )}
                     </div>
                     <div className="flex-0">
                         <div
